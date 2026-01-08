@@ -1,6 +1,9 @@
 package io.zipcoder.persistenceapp.models;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +22,12 @@ public class Department {
     // One department has one manager (who is an Employee)
     @OneToOne
     @JoinColumn(name = "manager_id")
+    @JsonIgnoreProperties({"department", "manager", "directReports"}) 
     private Employee manager;
     
     // One department has many employees
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"department", "manager", "directReports"}) 
     private List<Employee> employees = new ArrayList<>();
     
     // Constructors

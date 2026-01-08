@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "employees")
@@ -35,15 +36,18 @@ public class Employee {
     // Self-referential: Employee reports to another Employee (manager)
     @ManyToOne
     @JoinColumn(name = "manager_id")
+    @JsonIgnoreProperties({"directReports", "manager"})
     private Employee manager;
     
     // Inverse: One manager has many direct reports
     @OneToMany(mappedBy = "manager", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"directReports", "manager"}) 
     private List<Employee> directReports = new ArrayList<>();
     
     // Many employees belong to one department
     @ManyToOne
     @JoinColumn(name = "dept_num")
+    @JsonIgnoreProperties({"employees", "manager"})
     private Department department;
     
     // Constructors
